@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "https://apextick-1.onrender.com";
+const BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 
 export type DataSource = "live" | "cached" | "demo";
 
