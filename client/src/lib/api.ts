@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "https://apextick-1.onrender.com";
+const rawBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ?? "https://apextick-1.onrender.com";
 const BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 
 export type DataSource = "live" | "cached" | "demo";
@@ -106,7 +107,13 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
-  getWatchlist: () => request<WatchlistResponse>("/api/watchlist"),
+  getWatchlist: async (): Promise<WatchlistResponse> => {
+    const res = await request<WatchlistResponse>("/api/watchlist");
+    return {
+      watchlist: res?.watchlist ?? [],
+      previousVisitAt: res?.previousVisitAt ?? null,
+    };
+  },
 
   getStockDetail: (ticker: string) =>
     request<StockDetail>(`/api/watchlist/${encodeURIComponent(ticker)}/detail`),
